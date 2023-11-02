@@ -87,7 +87,15 @@ class MarkersMapActivity : AppCompatActivity(), OnMapReadyCallback {
         // Call fetch Nearby Pizza Restaurants and draw function
         fetchNearbyPizzaRestaurants()
 
+        // Action for Normal Map radio button press
+        binding.radioButtonNormal.setOnCheckedChangeListener { buttonView, isChecked ->
+            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        }
 
+        // Action for Satellite Map radio button press
+        binding.radioButtonSatellite.setOnCheckedChangeListener { buttonView, isChecked ->
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        }
     }
 
     // Define function to fetch Nearby Pizza Restaurants and draw
