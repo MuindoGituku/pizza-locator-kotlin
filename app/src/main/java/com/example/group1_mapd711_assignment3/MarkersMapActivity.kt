@@ -9,6 +9,7 @@
 package com.example.group1_mapd711_assignment3
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.group1_mapd711_assignment3.databinding.ActivityMarkersMapBinding
@@ -76,14 +77,21 @@ class MarkersMapActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker to selected town
         val selectedTownPin = LatLng(townLatitude, townLongitude)
         mMap.addMarker(MarkerOptions().position(selectedTownPin).title(userSelectedCity))
+
+        // Set default zoom on map
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedTownPin, 13f))
 
-        // Call fetch Nearby Pizza Restaurants function
+        // Set default map type as normal
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        // Call fetch Nearby Pizza Restaurants and draw function
         fetchNearbyPizzaRestaurants()
+
+
     }
 
+    // Define function to fetch Nearby Pizza Restaurants and draw
     private fun fetchNearbyPizzaRestaurants(){
-
         // Google Places API key
         val apiKey = "AIzaSyDBQOf0tvMNiecFD8A5UQ-0JmHW8BL6JAA"
 
@@ -121,7 +129,9 @@ class MarkersMapActivity : AppCompatActivity(), OnMapReadyCallback {
                         .position(latLng)
                         .title(place.name)
                         .snippet(place.vicinity)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                        .infoWindowAnchor(1.0F, 2.0F)
+                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pizza_icon_small))
                     mMap.addMarker(markerOptions)
                 }
 
@@ -129,6 +139,5 @@ class MarkersMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 e.printStackTrace()
             }
         }
-
     }
 }
