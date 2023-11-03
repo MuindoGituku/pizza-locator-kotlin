@@ -28,8 +28,28 @@ import retrofit2.http.Query
 
 // Data classes for API response
 data class PlaceResult(val results: List<Place>)
-data class Place(val name: String, val vicinity: String, val geometry: Geometry)
+data class Place(
+    val name: String,
+    val vicinity: String,
+    val formatted_address: String,
+    val formatted_phone_number: String,
+    val international_phone_number: String,
+    val opening_hours: OpenNow,
+    val rating: Double,
+    val user_ratings_total: Double,
+    val website: String,
+    val geometry: Geometry,
+    val photos: List<Photo>,
+)
 data class Geometry(val location: Location)
+
+data class Photo(
+    val height: Double,
+    val photo_reference : String,
+    val width: Double,
+)
+
+data class OpenNow(val open_now: Boolean)
 data class Location(val lat: Double, val lng: Double)
 
 // Retrofit service interface
@@ -76,7 +96,7 @@ class MarkersMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker to selected town
         val selectedTownPin = LatLng(townLatitude, townLongitude)
-        mMap.addMarker(MarkerOptions().position(selectedTownPin).title(userSelectedCity))
+        mMap.addMarker(MarkerOptions().position(selectedTownPin).title(intent.getStringExtra("selected_city")))
 
         // Set default zoom on map
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedTownPin, 13f))
@@ -140,7 +160,9 @@ class MarkersMapActivity : AppCompatActivity(), OnMapReadyCallback {
                         .infoWindowAnchor(1.0F, 2.0F)
                         //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.pizza_icon_small))
+
                     mMap.addMarker(markerOptions)
+                    Log.d("places",place.toString())
                 }
 
             } catch (e: Exception) {
@@ -149,3 +171,20 @@ class MarkersMapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 }
+
+//val restaurant_image = view.findViewById<ImageView>(R.id.restaurant_image)
+//val restaurant_name = view.findViewById<TextView>(R.id.restaurant_name)
+//val address_vicinity = view.findViewById<TextView>(R.id.address_vicinity)
+//val restaurant_rating_number = view.findViewById<TextView>(R.id.restaurant_rating_number)
+//val restaurant_rating_bar = view.findViewById<RatingBar>(R.id.restaurant_rating_bar)
+//val restaurant_rating_count = view.findViewById<TextView>(R.id.restaurant_rating_count)
+//val open_hours = view.findViewById<TextView>(R.id.open_hours)
+
+
+//restaurant_name.text = place.name
+//address_vicinity.text = place.vicinity
+//restaurant_rating_number.text = place.rating.toString()
+//restaurant_rating_bar.rating = place.rating.toFloat()
+//restaurant_rating_count.text = place.user_ratings_total.toString()
+//open_hours.text = if (place.opening_hours.open_now) "OPEN" else "CLOSED"
+
